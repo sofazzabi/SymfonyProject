@@ -113,7 +113,13 @@ class TodoController extends AbstractController
     #[Route('/todo/reset', name: 'todo.reset')]
     public  function resetTodo(Request $request ):RedirectResponse{
         $session = $request->getSession();
-        $session->remove('todos');
+        if ($session->has('todos')){
+            $session->remove('todos');
+        }
+        else {
+            $this->addFlash('error',"La session n'existe pas'");
+        }
+
         return $this->redirectToRoute('app_todos');
 
 
